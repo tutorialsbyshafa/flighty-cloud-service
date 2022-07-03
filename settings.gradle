@@ -1,0 +1,4 @@
+rootProject.name = 'flighty'
+include 'flighty-api-gateway'
+include 'flighty-config-server'
+include 'flighty-service-discovery'
