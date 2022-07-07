@@ -1,6 +1,28 @@
 server:
-  port: ${SERVER_PORT:8080}
+  port: ${SERVER_PORT:8081}
 
+service:
+  security:
+    external:
+      username: komtectest
+      password: k0mtectest
+    internal:
+      source: komtec
+      authorization: Basic dGVybWluYWx0ZXN0OlRlcm0hbkBsdGVzdA==
+
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: flighty-auth-ms
+          uri: lb://FLIGHTY-AUTH-MS
+#          filters:
+#            - CustomFilter
+          predicates:
+            - Path=/auth-ms/**
 
 management:
   endpoints:

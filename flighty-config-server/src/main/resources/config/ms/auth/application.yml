@@ -1,0 +1,26 @@
+server:
+  port: ${SERVER_PORT:0}
+
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka/}
+  server:
+    enableSelfPreservation: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  context-path: /
+
+jwt:
+  expiry:
+    default: ${JWT_DEFAULT_EXPIRY:10800000}
+    remember: ${JWT_REMEMBERED_EXPIRY:10800000}
+  secret: ${JWT_SECRET:temporarysecretkey}
+  header: ${JWT_HEADER:Authorization}
+  prefix: ${JWT_PREFIX:Bearer}
