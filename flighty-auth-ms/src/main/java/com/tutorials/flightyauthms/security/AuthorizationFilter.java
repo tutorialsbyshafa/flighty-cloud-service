@@ -26,9 +26,9 @@ public class AuthorizationFilter extends OncePerRequestFilter {
         if (Objects.isNull(req.getHeader("X-Gateway-Token"))
                 || !req.getHeader("X-Gateway-Token").equals("token")) {
             handleExternalRequest(res);
+        } else {
+            chain.doFilter(req, res);
         }
-
-        chain.doFilter(req, res);
     }
 
     private void handleExternalRequest(HttpServletResponse res) throws IOException {

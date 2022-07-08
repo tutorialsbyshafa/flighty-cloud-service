@@ -23,7 +23,7 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-actuator:${actuator_version}"
     implementation "org.springframework.cloud:spring-cloud-starter-gateway:${gateway_version}"
     implementation "org.projectlombok:lombok:${lombok_version}"
-
+    runtimeOnly("io.netty:netty-resolver-dns-native-macos:4.1.76.Final:osx-aarch_64")
 }
 
 dependencyManagement {
