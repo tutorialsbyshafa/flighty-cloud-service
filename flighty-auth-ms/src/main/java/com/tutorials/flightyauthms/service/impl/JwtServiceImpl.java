@@ -2,6 +2,7 @@ package com.tutorials.flightyauthms.service.impl;
 
 
 import com.tutorials.flightyauthms.model.GenerateJwtRsModel;
+import com.tutorials.flightyauthms.service.JwtService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -17,7 +18,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Log4j2
 @RequiredArgsConstructor
-public class JwtServiceImpl implements com.tutorials.flightyauthms.service.JwtService {
+public class JwtServiceImpl implements JwtService {
 
     @Value("${jwt.secret}")
     private String secret;
@@ -35,9 +36,9 @@ public class JwtServiceImpl implements com.tutorials.flightyauthms.service.JwtSe
     private String prefix;
 
     @Override
-    public GenerateJwtRsModel generateToken(String username, boolean rememberMe) {
+    public GenerateJwtRsModel generateToken(String username, Boolean rememberMe) {
         final Date now = new Date();
-        final long delta = rememberMe ? expiryRememberMe : expiryDefault;
+        final long delta = Boolean.TRUE.equals(rememberMe) ? expiryRememberMe : expiryDefault;
 
         var token = Jwts.builder()
                 .setSubject(username)

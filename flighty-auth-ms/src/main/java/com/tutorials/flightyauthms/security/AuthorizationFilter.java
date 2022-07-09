@@ -2,7 +2,6 @@ package com.tutorials.flightyauthms.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tutorials.flightyauthms.model.ErrorResponseModel;
-import com.tutorials.flightyauthms.model.ResponseModel;
 import java.io.IOException;
 import java.util.Objects;
 import javax.servlet.FilterChain;
@@ -36,12 +35,9 @@ public class AuthorizationFilter extends OncePerRequestFilter {
         res.setContentType("application/json");
         objectMapper.writeValue(
                 res.getOutputStream(),
-                ResponseModel.builder()
-                        .status(HttpStatus.BAD_REQUEST)
-                        .body(ErrorResponseModel.builder()
-                                .code(9999)
-                                .message("Unauthorized request!")
-                                .build())
+                ErrorResponseModel.builder()
+                        .code(9999)
+                        .message("Unauthorized request!")
                         .build());
 
         logger.error("Unauthorized request!");

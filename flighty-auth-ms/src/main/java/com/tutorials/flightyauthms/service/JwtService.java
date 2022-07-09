@@ -5,7 +5,7 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 
 public interface JwtService {
-    GenerateJwtRsModel generateToken(String username, boolean rememberMe);
+    GenerateJwtRsModel generateToken(String username, Boolean rememberMe);
 
     Optional<String> extractSubjectFromToken(HttpServletRequest request);
 }
