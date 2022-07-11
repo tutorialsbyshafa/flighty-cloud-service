@@ -1,16 +1,9 @@
 package com.tutorials.flightyauthms.model;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import javax.validation.constraints.NotBlank;
 
 @AllArgsConstructor
 @Getter
@@ -21,7 +14,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class GenerateJwtRqModel {
 
-    @NotNull
+    @NotBlank(message = "username must be provided")
     String username;
 
     Boolean rememberMe;
