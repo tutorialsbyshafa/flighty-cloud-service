@@ -2,6 +2,7 @@ package com.tutorials.flightyauthms.model;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

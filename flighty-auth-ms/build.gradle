@@ -28,15 +28,14 @@ dependencies {
     implementation "org.springframework.cloud:spring-cloud-starter-bootstrap:${cloud_bootstrap_version}"
     implementation "org.springframework.boot:spring-boot-starter-actuator:${actuator_version}"
     implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.springframework.boot:spring-boot-starter-validation"
     implementation "org.springframework.boot:spring-boot-starter-security:${spring_boot_version}"
     implementation "org.springdoc:springdoc-openapi-ui:${open_api_version}"
     implementation "io.jsonwebtoken:jjwt:${jwt_version}"
     compileOnly "org.projectlombok:lombok:${lombok_version}"
     annotationProcessor "org.projectlombok:lombok:${lombok_version}"
     compileOnly "javax.servlet:javax.servlet-api:${javax_servlet_version}"
-
 }
-
 
 dependencyManagement {
     imports {

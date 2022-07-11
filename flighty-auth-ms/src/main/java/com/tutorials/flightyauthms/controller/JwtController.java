@@ -28,7 +28,7 @@ public class JwtController {
 
     @Operation(description = "Generate JWT using provided data")
     @PostMapping(GENERATE_JWT_URL)
-    public ResponseEntity<GenerateJwtRsModel> generateToken(@RequestBody @Valid GenerateJwtRqModel requestBody) {
+    public ResponseEntity<GenerateJwtRsModel> generateToken(@Valid @RequestBody GenerateJwtRqModel requestBody) {
         log.info("Request data: [Url: {}, payload: {}", GENERATE_JWT_URL, requestBody);
 
         var response = jwtService.generateToken(requestBody.getUsername(), requestBody.getRememberMe());
