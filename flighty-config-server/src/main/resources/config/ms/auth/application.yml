@@ -24,3 +24,9 @@ jwt:
   secret: ${JWT_SECRET:temporarysecretkey}
   header: ${JWT_HEADER:Authorization}
   prefix: ${JWT_PREFIX:Bearer}
+
+security:
+  internal:
+    header:
+      name: ${INTERNAL_SECURITY_HEADER:X-Gateway-Token}
+      value: ${INTERNAL_SECURITY_VALUE:token}

@@ -1,12 +1,6 @@
 server:
   port: ${SERVER_PORT:8081}
 
-security:
-  internal:
-    header:
-      name: ${INTERNAL_SECURITY_HEADER:X-Gateway-Token}
-      value: ${INTERNAL_SECURITY_VALUE:token}
-
 spring:
   cloud:
     gateway:
@@ -20,3 +14,9 @@ management:
       exposure:
         include: "*"
   context-path: /
+
+security:
+  internal:
+    header:
+      name: ${INTERNAL_SECURITY_HEADER:X-Gateway-Token}
+      value: ${INTERNAL_SECURITY_VALUE:token}

@@ -14,7 +14,7 @@ import javax.validation.constraints.NotBlank;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class GenerateJwtRqModel {
 
-    @NotBlank(message = "username must be provided")
+    @NotBlank(message = "Username must be provided")
     String username;
 
     Boolean rememberMe;

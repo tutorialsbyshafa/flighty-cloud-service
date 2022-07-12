@@ -19,11 +19,11 @@ public class GlobalExceptionHandler {
                     .getDefaultMessage();
 
             return new ResponseEntity<>(
-                    ErrorResponseModel.builder().message(message).build(),
+                    ErrorResponseModel.builder().message(message).code(9001).build(),
                     HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(
-                ErrorResponseModel.builder().message(ex.getMessage()).build(),
+                ErrorResponseModel.builder().message(ex.getMessage()).code(9999).build(),
                 HttpStatus.BAD_REQUEST);
     }
 }
