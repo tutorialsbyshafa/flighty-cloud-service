@@ -1,4 +1,4 @@
-package com.example.flightyapigateway.filter;
+package com.tutorials.flightyapigateway.filter;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;

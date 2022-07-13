@@ -1,4 +1,4 @@
-package com.example.flightyapigateway.util;
+package com.tutorials.flightyapigateway.util;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

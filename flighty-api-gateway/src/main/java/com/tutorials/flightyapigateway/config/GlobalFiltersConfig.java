@@ -1,4 +1,4 @@
-package com.example.flightyapigateway.config;
+package com.tutorials.flightyapigateway.config;
 
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.context.annotation.Bean;

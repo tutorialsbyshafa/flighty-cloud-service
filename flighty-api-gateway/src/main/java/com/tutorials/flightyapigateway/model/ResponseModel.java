@@ -1,4 +1,4 @@
-package com.example.flightyapigateway.model;
+package com.tutorials.flightyapigateway.model;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

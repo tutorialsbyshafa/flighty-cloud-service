@@ -1,11 +1,8 @@
-package com.example.flightyapigateway.config;
+package com.tutorials.flightyapigateway.config;
 
-import static com.example.flightyapigateway.util.Constant.AUTH_MS_ID;
-import static com.example.flightyapigateway.util.Constant.AUTH_MS_PATH;
-import static com.example.flightyapigateway.util.Constant.AUTH_MS_URI;
-
-import com.example.flightyapigateway.filter.RouteGatewayFilterFactory;
-import com.example.flightyapigateway.model.ResponseModel;
+import com.tutorials.flightyapigateway.filter.RouteGatewayFilterFactory;
+import com.tutorials.flightyapigateway.model.ResponseModel;
+import com.tutorials.flightyapigateway.util.Constant;
 import java.time.LocalDateTime;
 import org.springframework.cloud.gateway.route.Route;
 import org.springframework.cloud.gateway.route.RouteLocator;
@@ -25,7 +22,7 @@ public class RouteConfig {
     @Bean
     public RouteLocator routes(RouteLocatorBuilder builder, RouteGatewayFilterFactory routeFactory) {
         return builder.routes()
-                .route(AUTH_MS_ID, spec -> buildRoute(routeFactory, spec, AUTH_MS_PATH, AUTH_MS_ID, AUTH_MS_URI))
+                .route(Constant.AUTH_MS_ID, spec -> buildRoute(routeFactory, spec, Constant.AUTH_MS_PATH, Constant.AUTH_MS_ID, Constant.AUTH_MS_URI))
                 .build();
     }
 
