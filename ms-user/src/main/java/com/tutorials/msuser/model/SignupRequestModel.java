@@ -22,4 +22,5 @@ public class SignupRequestModel {
 
     @NotBlank
     String fullname;
+
 }
