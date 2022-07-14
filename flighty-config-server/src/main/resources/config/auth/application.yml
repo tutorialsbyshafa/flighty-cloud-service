@@ -1,6 +1,23 @@
 server:
   port: ${SERVER_PORT:0}
 
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5433/flighty}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:xiaominote9}
+    driver-class-name: org.postgresql.Driver
+  liquibase:
+    enabled: ${SPRING_LIQUIBASE_ENABLED:true}
+    change-log: classpath:liquibase/changelog-master.yml
+    drop-first: false
+    default-schema: ${FLIGHTY_DB_SCHEMA:public}
+    database-change-log-table: AUTHMS_DBCHANGELOG
+    database-change-log-lock-table: AUTHMS_DBCHANGELOGLOCK
+  jpa:
+    hibernate:
+      ddl-auto: none
+
 eureka:
   client:
     registerWithEureka: true
@@ -19,7 +36,7 @@ management:
 
 jwt:
   expiry:
-    default: ${JWT_DEFAULT_EXPIRY:10800000}
+    default: ${JWT_DEFAULT_EXPIRY:3600000}
     remember: ${JWT_REMEMBERED_EXPIRY:10800000}
   secret: ${JWT_SECRET:temporarysecretkey}
   header: ${JWT_HEADER:Authorization}

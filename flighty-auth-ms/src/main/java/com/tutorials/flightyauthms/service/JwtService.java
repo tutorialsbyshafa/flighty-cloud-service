@@ -1,11 +1,14 @@
 package com.tutorials.flightyauthms.service;
 
+import com.tutorials.flightyauthms.model.ExtractJwtRqModel;
+import com.tutorials.flightyauthms.model.ExtractJwtRsModel;
+import com.tutorials.flightyauthms.model.GenerateJwtRqModel;
 import com.tutorials.flightyauthms.model.GenerateJwtRsModel;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 
 public interface JwtService {
-    GenerateJwtRsModel generateToken(String username, Boolean rememberMe);
+    GenerateJwtRsModel generateToken(GenerateJwtRqModel requestBody);
 
-    Optional<String> extractSubjectFromToken(HttpServletRequest request);
+    ExtractJwtRsModel extractToken(ExtractJwtRqModel requestBody);
 }

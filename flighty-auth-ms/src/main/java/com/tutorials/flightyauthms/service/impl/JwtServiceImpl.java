@@ -1,24 +1,26 @@
 package com.tutorials.flightyauthms.service.impl;
 
-
+import com.tutorials.flightyauthms.model.ExtractJwtRqModel;
+import com.tutorials.flightyauthms.model.ExtractJwtRsModel;
+import com.tutorials.flightyauthms.model.GenerateJwtRqModel;
 import com.tutorials.flightyauthms.model.GenerateJwtRsModel;
+import com.tutorials.flightyauthms.security.FUserDetailsService;
 import com.tutorials.flightyauthms.service.JwtService;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.util.Date;
-import java.util.Optional;
-import javax.servlet.http.HttpServletRequest;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
 @Service
 @Log4j2
 @RequiredArgsConstructor
 public class JwtServiceImpl implements JwtService {
+    private final FUserDetailsService fUserDetailsService;
 
     @Value("${jwt.secret}")
     private String secret;
@@ -36,12 +38,12 @@ public class JwtServiceImpl implements JwtService {
     private String prefix;
 
     @Override
-    public GenerateJwtRsModel generateToken(String username, Boolean rememberMe) {
+    public GenerateJwtRsModel generateToken(GenerateJwtRqModel requestBody) {
         final Date now = new Date();
-        final long delta = Boolean.TRUE.equals(rememberMe) ? expiryRememberMe : expiryDefault;
+        final long delta = Boolean.TRUE.equals(requestBody.getRememberMe()) ? expiryRememberMe : expiryDefault;
 
         var token = Jwts.builder()
-                .setSubject(username)
+                .setSubject(requestBody.getUsername())
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + delta))
                 .signWith(SignatureAlgorithm.HS512, secret)
@@ -51,25 +53,19 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public Optional<String> extractSubjectFromToken(HttpServletRequest request) {
-        return getTokenFromRequest(request)
-                .flatMap(this::parseTokenToClaims)
-                .map(this::getSubjectFromClaims);
-    }
+    public ExtractJwtRsModel extractToken(ExtractJwtRqModel requestBody) {
+        var token = requestBody.getToken().substring(prefix.length());
+        var claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
+        var subject = claims.getBody().getSubject();
+        var userDetails = fUserDetailsService.loadUserByUsername(subject);
 
-    private Optional<String> getTokenFromRequest(HttpServletRequest request) {
-        return Optional.ofNullable(request.getHeader(header))
-                .filter(h -> h.startsWith(prefix))
-                .map(h -> h.substring(prefix.length()));
-    }
-
-
-    private Optional<Jws<Claims>> parseTokenToClaims(String token) {
-        return Optional.of(Jwts.parser().setSigningKey(secret).parseClaimsJws(token));
-    }
-
-    private String getSubjectFromClaims(Jws<Claims> claimsJws) {
-        return claimsJws.getBody().getSubject();
+        return ExtractJwtRsModel.builder()
+                .username(userDetails.getUsername())
+                .roles(userDetails.getAuthorities()
+                        .stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .collect(Collectors.toList()))
+                .build();
     }
 
 }
