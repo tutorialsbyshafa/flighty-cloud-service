@@ -21,5 +21,5 @@ public class SignupRequestModel {
     String password;
 
     @NotBlank
-    String fullname;
+    String fullName;
 }

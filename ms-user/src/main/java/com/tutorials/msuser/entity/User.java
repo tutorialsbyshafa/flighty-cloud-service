@@ -1,23 +1,14 @@
 package com.tutorials.msuser.entity;
 
-import java.util.List;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-@Data
+import javax.persistence.*;
+import java.util.List;
+import java.util.UUID;
+
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -27,12 +18,12 @@ import lombok.experimental.FieldDefaults;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
-    String userId;
+    Long id;
+    UUID userId;
     String email;
     String password;
-    String fullname;
-    UserStatus status;
+    String fullName;
+    String status;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -41,4 +32,12 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     List<Role> roles;
 
+    @PrePersist
+    private void setPreValues() {
+        if (userId == null)
+            userId = UUID.randomUUID();
+
+        if (status == null)
+            status = UserStatus.ACTIVE.name();
+    }
 }
