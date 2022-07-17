@@ -6,6 +6,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Constant {
     public static final String AUTH_MS_ID = "flighty-auth-ms";
+    public static final String MS_USER_ID = "ms-user";
+
     public static final String AUTH_MS_PATH = "/auth-ms/**";
+    public static final String MS_USER_PATH = "/ms-user/**";
+
     public static final String AUTH_MS_URI = "lb://FLIGHTY-AUTH-MS";
+    public static final String MS_USER_URI = "lb://MS-USER";
 }

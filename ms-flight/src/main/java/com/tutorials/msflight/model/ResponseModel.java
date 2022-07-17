@@ -1,4 +1,4 @@
-package com.tutorials.flightyapigateway.model;
+package com.tutorials.msflight.model;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

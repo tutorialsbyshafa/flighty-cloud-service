@@ -11,14 +11,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @AllArgsConstructor
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-    private static final String[] AUTH_WHITELIST = {
-            "/authenticate",
-            "/swagger-resources/**",
-            "/swagger-ui/**",
-            "/v3/api-docs/**",
-            "/webjars/**",
-            "/actuator/**"
-    };
+
     private final AuthorizationFilter authorizationFilter;
 
     @Override
@@ -28,7 +21,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(AUTH_WHITELIST).permitAll()
                 .anyRequest().permitAll()
                 .and()
                 .addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class);

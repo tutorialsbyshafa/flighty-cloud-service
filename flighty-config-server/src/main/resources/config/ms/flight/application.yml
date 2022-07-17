@@ -25,4 +25,5 @@ security:
 
 
 client:
-  auth: ${AUTH_MS_URL:http://localhost:8081/auth-ms/}
+  url:
+    auth: ${AUTH_MS_URL:http://localhost:8081/auth-ms/}

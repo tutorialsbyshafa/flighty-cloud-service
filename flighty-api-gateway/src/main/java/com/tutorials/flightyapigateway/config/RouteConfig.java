@@ -23,6 +23,7 @@ public class RouteConfig {
     public RouteLocator routes(RouteLocatorBuilder builder, RouteGatewayFilterFactory routeFactory) {
         return builder.routes()
                 .route(Constant.AUTH_MS_ID, spec -> buildRoute(routeFactory, spec, Constant.AUTH_MS_PATH, Constant.AUTH_MS_ID, Constant.AUTH_MS_URI))
+                .route(Constant.MS_USER_ID, spec -> buildRoute(routeFactory, spec, Constant.MS_USER_PATH, Constant.MS_USER_ID, Constant.MS_USER_URI))
                 .build();
     }
 

@@ -1,22 +1,18 @@
 package com.tutorials.msflight.security;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureException;
-import io.jsonwebtoken.UnsupportedJwtException;
+import com.tutorials.msflight.service.AuthService;
 import java.io.IOException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -24,51 +20,40 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Component
 @AllArgsConstructor
 public class AuthorizationFilter extends OncePerRequestFilter {
-    private final JwtService jwtService;
-    private final MUserDetailsService mUserDetailsService;
-    private final ObjectMapper objectMapper = new ObjectMapper();
+
+    private final AuthService authService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain chain) throws IOException, ServletException {
-        try {
-            authorizeUser(request, response, chain);
-        } catch (InvalidModelException | NullPointerException
-                | SignatureException | MalformedJwtException | ExpiredJwtException
-                | UnsupportedJwtException | IllegalArgumentException | UsernameNotFoundException exception) {
-            handleJwtException(response, exception);
-        }
+        authorizeUser(request, response, chain);
+
     }
 
     private void authorizeUser(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
             throws IOException, ServletException {
 
-        var token = Optional.ofNullable(req.getHeader("Authorization"));
+        var authorization = Optional.ofNullable(req.getHeader("Authorization"));
 
-        jwtService.extractToken(req)
-                .flatMap(jwtService::parseTokenToClaims)
-                .map(jwtService::getSubjectFromClaims)
-                .map(mUserDetailsService::loadUserByUsername)
-                .map(ud -> new UsernamePasswordAuthenticationToken(ud, null, ud.getAuthorities()))
-                .ifPresent(auth -> {
-                    auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
-                    SecurityContextHolder.getContext().setAuthentication(auth);
-                });
+        authorization.ifPresent(auth -> {
+            var userData = authService.extractToken(auth);
+
+            var grantedAuthorities =
+                    userData.getRoles()
+                            .stream()
+                            .map(this::getGrantedAuthority)
+                            .collect(Collectors.toList());
+
+            var authToken = new UsernamePasswordAuthenticationToken(userData, null, grantedAuthorities);
+            authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
+            SecurityContextHolder.getContext().setAuthentication(authToken);
+        });
 
         chain.doFilter(req, res);
     }
 
-    private void handleJwtException(HttpServletResponse response, RuntimeException exception) throws IOException {
-        response.setStatus(HttpStatus.BAD_REQUEST.value());
-        response.setContentType(CONTENT_TYPE_JSON);
-        objectMapper.writeValue(
-                response.getOutputStream(),
-                ResponseModel.builder()
-                        .status(HttpStatus.BAD_REQUEST)
-                        .body(exception.getMessage())
-                        .build());
-
-        logger.error(exception.getMessage());
+    private GrantedAuthority getGrantedAuthority(String r) {
+        return () -> r;
     }
 }
