@@ -35,22 +35,22 @@ public class JwtController {
     @Operation(description = "Generate JWT using provided data")
     @PostMapping(GENERATE_JWT_URL)
     public ResponseEntity<GenerateJwtRsModel> generateToken(@Valid @RequestBody GenerateJwtRqModel requestBody) {
-        log.info("Request data: [Url: {}, payload: {}", GENERATE_JWT_URL, requestBody);
+        log.info("Request data: [Url: {}, payload: {}]", GENERATE_JWT_URL, requestBody);
 
         var response = jwtService.generateToken(requestBody);
 
-        log.info("Response data: [Url: {}, payload: {}", GENERATE_JWT_URL, response);
+        log.info("Response data: [Url: {}, payload: {}]", GENERATE_JWT_URL, response);
         return ResponseEntity.ok(response);
     }
 
     @Operation(description = "Extract payload from JWT")
     @GetMapping(EXTRACT_JWT_URL)
     public ResponseEntity<ExtractJwtRsModel> extractToken(@Valid @RequestBody ExtractJwtRqModel requestBody) {
-        log.info("Request data: [Url: {}, payload: {}", EXTRACT_JWT_URL, requestBody);
+        log.info("Request data: [Url: {}, payload: {}]", EXTRACT_JWT_URL, requestBody);
 
         var response = jwtService.extractToken(requestBody);
 
-        log.info("Response data: [Url: {}, payload: {}", EXTRACT_JWT_URL, response);
+        log.info("Response data: [Url: {}, payload: {}]", EXTRACT_JWT_URL, response);
         return ResponseEntity.ok(response);
     }
 }
