@@ -5,13 +5,18 @@ import com.tutorials.msuser.model.SignupRequestModel;
 import com.tutorials.msuser.model.SignupResponseModel;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
 public abstract class UserMapper {
+
+    public static final UserMapper USER_MAPPER_INSTANCE = Mappers.getMapper(UserMapper.class);
+
 
     @Mapping(target = "email", source = "username")
     public abstract User mapRequestToEntity(SignupRequestModel request);
 
     @Mapping(target = "username", source = "email")
+    @Mapping(target = "id", source = "userId")
     public abstract SignupResponseModel mapEntityToResponse(User user);
 }

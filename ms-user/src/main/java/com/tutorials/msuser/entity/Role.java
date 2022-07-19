@@ -24,10 +24,4 @@ public class Role {
 
     @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
     List<User> users;
-
-    @PrePersist
-    private void setPreValues() {
-        if (roleId == null)
-            roleId = UUID.randomUUID();
-    }
 }

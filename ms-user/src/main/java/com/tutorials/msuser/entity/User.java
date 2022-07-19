@@ -19,11 +19,23 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+
+    @Column(name = "user_id")
     UUID userId;
+
+    @Column(name = "email")
     String email;
+
+    @ToString.Exclude
+    @Column(name = "password")
     String password;
+
+    @Column(name = "full_name")
     String fullName;
-    String status;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    UserStatus status;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -34,10 +46,7 @@ public class User {
 
     @PrePersist
     private void setPreValues() {
-        if (userId == null)
-            userId = UUID.randomUUID();
-
         if (status == null)
-            status = UserStatus.ACTIVE.name();
+            status = UserStatus.ACTIVE;
     }
 }

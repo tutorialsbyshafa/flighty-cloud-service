@@ -1,5 +1,7 @@
 package com.tutorials.msuser.model;
 
+import java.util.Objects;
+import javax.validation.constraints.AssertFalse;
 import javax.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -22,4 +24,19 @@ public class SignupRequestModel {
 
     @NotBlank
     String fullName;
+
+    @AssertFalse(message = "Username must be valid Email address")
+    public boolean isUsernameInvalid() {
+        return !Objects.isNull(getUsername()) && !getUsername().matches("^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}");
+    }
+
+    @AssertFalse(message = "Password must contain at least 5 characters")
+    public boolean isPasswordInvalid() {
+        return !Objects.isNull(getPassword()) && getPassword().length() < 5;
+    }
+
+    @AssertFalse(message = "Full name must be valid")
+    public boolean isFullNameInvalid() {
+        return !Objects.isNull(getFullName()) && getFullName().split(" ").length < 2;
+    }
 }

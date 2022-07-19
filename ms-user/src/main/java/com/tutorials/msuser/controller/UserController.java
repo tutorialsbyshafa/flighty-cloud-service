@@ -1,5 +1,7 @@
 package com.tutorials.msuser.controller;
 
+import static com.tutorials.msuser.util.UrlConstant.SIGNUP_URL;
+
 import com.tutorials.msuser.model.SignupRequestModel;
 import com.tutorials.msuser.model.SignupResponseModel;
 import com.tutorials.msuser.service.UserService;
@@ -16,20 +18,17 @@ import org.springframework.web.bind.annotation.RestController;
 @Log4j2
 @RestController
 @AllArgsConstructor
-@RequestMapping("/ms-user")
+@RequestMapping()
 public class UserController {
     private final UserService userService;
 
-    @PostMapping("/signup")
+    @PostMapping(SIGNUP_URL)
     public ResponseEntity<SignupResponseModel> signup(@Valid @RequestBody SignupRequestModel request) {
-        log.info("Request data: [Url: {}, payload: {}]", "/signup", request);
+        log.info("Request data: [Url: {}, payload: {}]", SIGNUP_URL, request);
 
-        var response = userService.signup(request);
+        var response = userService.createUser(request);
 
-        log.info("Response data: [Url: {}, payload: {}]", "/signup", response);
-
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(response);
+        log.info("Response data: [Url: {}, payload: {}]", SIGNUP_URL, response);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }

@@ -17,5 +17,5 @@ import java.util.UUID;
 public class SignupResponseModel {
     String username;
     String fullName;
-    UUID userId;
+    UUID id;
 }
