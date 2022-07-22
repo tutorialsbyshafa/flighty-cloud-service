@@ -1,9 +1,7 @@
 package com.tutorials.msuser.controller;
 
-import static com.tutorials.msuser.util.UrlConstant.LOGIN_URL;
 import static com.tutorials.msuser.util.UrlConstant.SIGNUP_URL;
 
-import com.tutorials.msuser.model.LoginRequestModel;
 import com.tutorials.msuser.model.SignupRequestModel;
 import com.tutorials.msuser.model.SignupResponseModel;
 import com.tutorials.msuser.service.UserService;
@@ -11,7 +9,6 @@ import javax.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,9 +31,4 @@ public class UserController {
         log.info("Response data: [Url: {}, payload: {}]", SIGNUP_URL, response);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
-
-//    @PostMapping(LOGIN_URL)
-//    public ResponseEntity<Object> login(@RequestBody LoginRequestModel request) {
-//        return ResponseEntity.ok().body(new Object());
-//    }
 }

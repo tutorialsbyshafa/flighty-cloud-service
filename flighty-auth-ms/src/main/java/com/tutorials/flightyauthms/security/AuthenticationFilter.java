@@ -1,19 +1,17 @@
-package com.tutorials.msuser.security;
+package com.tutorials.flightyauthms.security;
 
-import static com.tutorials.msuser.util.UrlConstant.LOGIN_URL;
+import static com.tutorials.flightyauthms.util.UrlConstant.LOGIN_URL;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tutorials.msuser.client.AuthMsClient;
-import com.tutorials.msuser.exception.AppException;
-import com.tutorials.msuser.model.ErrorResponseModel;
-import com.tutorials.msuser.model.GenerateJwtRqModel;
-import com.tutorials.msuser.model.LoginRequestModel;
-import com.tutorials.msuser.service.AuthService;
+import com.tutorials.flightyauthms.exception.AppException;
+import com.tutorials.flightyauthms.model.ErrorResponseModel;
+import com.tutorials.flightyauthms.model.GenerateJwtRqModel;
+import com.tutorials.flightyauthms.model.LoginRequestModel;
+import com.tutorials.flightyauthms.service.JwtService;
 import java.io.IOException;
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,10 +26,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Log4j2
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private final AuthService authService;
+    private final JwtService jwtService;
 
-    public AuthenticationFilter(AuthenticationManager authManager, AuthService authService) {
-        this.authService = authService;
+    public AuthenticationFilter(AuthenticationManager authManager, JwtService jwtService) {
+        this.jwtService = jwtService;
         super.setAuthenticationManager(authManager);
         super.setFilterProcessesUrl(LOGIN_URL);
     }
@@ -59,7 +57,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                 .rememberMe(true)
                 .build();
 
-        var jwtRsModel = authService.generateToken(generateJwtRqModel);
+        var jwtRsModel = jwtService.generateToken(generateJwtRqModel);
         generateResponse(response, HttpStatus.OK, jwtRsModel);
         log.info("Jwt token generated for: {}", username);
 

@@ -1,7 +1,9 @@
 package com.tutorials.flightyauthms.config;
 
 
+import com.tutorials.flightyauthms.security.AuthenticationFilter;
 import com.tutorials.flightyauthms.security.AuthorizationFilter;
+import com.tutorials.flightyauthms.service.JwtService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -21,6 +23,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/actuator/**"
     };
     private final AuthorizationFilter authorizationFilter;
+    private final JwtService jwtService;
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -31,7 +35,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .anyRequest().permitAll()
                 .and()
-                .addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilter(new AuthenticationFilter(authenticationManager(), jwtService));
+
 
     }
 

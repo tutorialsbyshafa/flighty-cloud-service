@@ -1,5 +1,6 @@
-package com.tutorials.msuser.model;
+package com.tutorials.flightyauthms.model;
 
+import javax.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,6 +13,10 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class LoginResponseModel {
-    String token;
+public class LoginRequestModel {
+    @NotBlank
+    String username;
+
+    @NotBlank
+    String password;
 }
