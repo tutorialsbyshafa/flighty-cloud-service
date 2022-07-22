@@ -35,8 +35,8 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @PostMapping(LOGIN_URL)
-    public ResponseEntity<Object> login(@RequestBody LoginRequestModel request) {
-        return ResponseEntity.ok().body(new Object());
-    }
+//    @PostMapping(LOGIN_URL)
+//    public ResponseEntity<Object> login(@RequestBody LoginRequestModel request) {
+//        return ResponseEntity.ok().body(new Object());
+//    }
 }
