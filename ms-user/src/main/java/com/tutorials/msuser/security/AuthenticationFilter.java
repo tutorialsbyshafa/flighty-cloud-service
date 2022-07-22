@@ -1,11 +1,14 @@
 package com.tutorials.msuser.security;
 
+import static com.tutorials.msuser.util.UrlConstant.LOGIN_URL;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tutorials.msuser.client.AuthMsClient;
 import com.tutorials.msuser.exception.AppException;
 import com.tutorials.msuser.model.ErrorResponseModel;
 import com.tutorials.msuser.model.GenerateJwtRqModel;
 import com.tutorials.msuser.model.LoginRequestModel;
+import com.tutorials.msuser.service.AuthService;
 import java.io.IOException;
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +18,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -22,10 +26,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Log4j2
-@AllArgsConstructor
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private final AuthMsClient authMsClient;
+    private final AuthService authService;
+
+    public AuthenticationFilter(AuthenticationManager authManager, AuthService authService) {
+        this.authService = authService;
+        super.setAuthenticationManager(authManager);
+        super.setFilterProcessesUrl(LOGIN_URL);
+    }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
@@ -50,7 +59,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                 .rememberMe(true)
                 .build();
 
-        var jwtRsModel = authMsClient.generateToken(generateJwtRqModel);
+        var jwtRsModel = authService.generateToken(generateJwtRqModel);
         generateResponse(response, HttpStatus.OK, jwtRsModel);
         log.info("Jwt token generated for: {}", username);
 
