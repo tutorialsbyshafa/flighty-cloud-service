@@ -20,6 +20,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.GenerationTime;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -35,6 +37,7 @@ public class User {
     @Column(name = "id")
     private long id;
 
+    @Generated(value = GenerationTime.ALWAYS)
     @Column(name = "user_id")
     private String userId;
 

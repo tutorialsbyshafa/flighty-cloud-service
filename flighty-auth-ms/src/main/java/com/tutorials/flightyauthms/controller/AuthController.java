@@ -1,6 +1,5 @@
 package com.tutorials.flightyauthms.controller;
 
-import static com.tutorials.flightyauthms.util.UrlConstant.GENERATE_JWT_URL;
 import static com.tutorials.flightyauthms.util.UrlConstant.LOGIN_URL;
 
 import com.tutorials.flightyauthms.model.LoginRequestModel;
@@ -26,7 +25,6 @@ public class AuthController {
     @Operation(description = "Login by username and password")
     @PostMapping(LOGIN_URL)
     public ResponseEntity<Object> login(@RequestBody LoginRequestModel request) {
-        log.info("Request data: [Url: {}, payload: {}]", GENERATE_JWT_URL, request);
         return ResponseEntity.ok().body(new Object());
     }
 

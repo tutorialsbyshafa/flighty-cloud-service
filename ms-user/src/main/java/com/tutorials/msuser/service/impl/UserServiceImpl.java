@@ -29,7 +29,6 @@ public class UserServiceImpl implements UserService {
         var user = USER_MAPPER_INSTANCE.mapRequestToEntity(request);
         user.setPassword(encoder.encode(request.getPassword()));
         setRoles(user);
-
         userRepository.save(user);
 
         return USER_MAPPER_INSTANCE.mapEntityToResponse(user);

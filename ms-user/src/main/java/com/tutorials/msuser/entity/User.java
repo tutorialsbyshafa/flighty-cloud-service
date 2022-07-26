@@ -1,11 +1,19 @@
 package com.tutorials.msuser.entity;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
 import java.util.List;
 import java.util.UUID;
+import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.GenerationTime;
 
 @Getter
 @Setter
@@ -21,6 +29,7 @@ public class User {
     Long id;
 
     @Column(name = "user_id")
+    @Generated(value = GenerationTime.ALWAYS)
     UUID userId;
 
     @Column(name = "email")
