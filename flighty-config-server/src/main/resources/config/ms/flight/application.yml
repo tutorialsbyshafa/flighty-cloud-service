@@ -3,6 +3,23 @@ server:
   servlet:
     context-path: /ms-flight
 
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/flighty}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:xiaominote9}
+    driver-class-name: org.postgresql.Driver
+  liquibase:
+    enabled: ${SPRING_LIQUIBASE_ENABLED:true}
+    change-log: classpath:liquibase/changelog-master.yml
+    drop-first: false
+    default-schema: ${FLIGHTY_DB_SCHEMA:public}
+    database-change-log-table: FLIGHTMS_DBCHANGELOG
+    database-change-log-lock-table: FLIGHTMS_DBCHANGELOGLOCK
+  jpa:
+    hibernate:
+      ddl-auto: none
+
 eureka:
   client:
     registerWithEureka: true
@@ -29,3 +46,9 @@ security:
 client:
   url:
     auth: ${AUTH_MS_URL:http://localhost:8081/auth-ms/}
+
+feign:
+  client:
+    config:
+      default:
+        loggerLevel: full

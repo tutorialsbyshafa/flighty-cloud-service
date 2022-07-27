@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Log4j2
 @Tag(name = "AUTH", description = "AUTH related operations")
 @Validated
-@RequestMapping()
+@RequestMapping
 public class AuthController {
 
     @Operation(description = "Login by username and password")

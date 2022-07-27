@@ -6,7 +6,6 @@ server:
 spring:
   datasource:
     url: ${DB_URL:jdbc:postgresql://localhost:5432/flighty}
-    //kapishmaya devammmm)))
     username: ${DB_USERNAME:postgres}
     password: ${DB_PASSWORD:xiaominote9}
     driver-class-name: org.postgresql.Driver
@@ -50,3 +49,9 @@ security:
     header:
       name: ${INTERNAL_SECURITY_HEADER:X-Gateway-Token}
       value: ${INTERNAL_SECURITY_VALUE:token}
+
+feign:
+  client:
+    config:
+      default:
+        loggerLevel: full
