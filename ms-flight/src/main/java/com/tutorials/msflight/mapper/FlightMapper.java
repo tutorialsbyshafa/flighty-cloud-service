@@ -31,10 +31,6 @@ public abstract class FlightMapper {
         flight.departureTime(LocalDateTime.parse(request.getDepartureTime(), formatter));
     }
 
-    @Mapping(target = "arrivalTime", ignore = true)
-    @Mapping(target = "departureTime", ignore = true)
-    @Mapping(target = "arrivalLocation", ignore = true)
-    @Mapping(target = "departureLocation", ignore = true)
     @Mapping(target = "id", source = "flightId")
     public abstract FlightRsModel mapEntityToResponse(Flight flight);
 

@@ -32,6 +32,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/flights").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, "/flights/id").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/flights").permitAll()
                 .and()
                 .addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class);
     }
