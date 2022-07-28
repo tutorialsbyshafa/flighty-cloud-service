@@ -9,6 +9,7 @@ import com.tutorials.msflight.model.FlightRsModel;
 import com.tutorials.msflight.repo.FlightRepository;
 import com.tutorials.msflight.repo.LocationRepository;
 import com.tutorials.msflight.service.FlightService;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -23,12 +24,14 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     public FlightRsModel createFlight(CreateFlightRqModel request) {
-        var arrivalLocation = findLocation(request.getArrivalLocation());
         var departureLocation = findLocation(request.getDepartureLocation());
+        var arrivalLocation = findLocation(request.getArrivalLocation());
+        var code = generateFlightCode(departureLocation, arrivalLocation);
 
         var flight = FLIGHT_MAPPER.mapRequestToEntity(request);
         flight.setArrivalLocation(arrivalLocation);
         flight.setDepartureLocation(departureLocation);
+        flight.setCode(code);
 
         flightRepository.save(flight);
 
@@ -41,5 +44,12 @@ public class FlightServiceImpl implements FlightService {
     private Location findLocation(UUID locationId) {
         return locationRepository.findLocationByLocationId(locationId)
                 .orElseThrow(() -> new AppException("location not found by given id"));
+    }
+
+    private String generateFlightCode(Location departureLocation, Location arrivalLocation) {
+        return String.format("%s%s%s",
+                departureLocation.getCity().substring(0, 1).toUpperCase(),
+                arrivalLocation.getCity().substring(0, 1).toUpperCase(),
+                LocalDateTime.now());
     }
 }

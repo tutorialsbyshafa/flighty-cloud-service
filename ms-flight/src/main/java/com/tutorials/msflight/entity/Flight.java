@@ -58,4 +58,14 @@ public class Flight {
     @Column(name = "active")
     Boolean active;
 
+    @PrePersist
+    private void setPreValues() {
+        if (status == null)
+            status = FlightStatus.SCHEDULED;
+
+        if (active == null)
+            active = true;
+    }
+
+
 }

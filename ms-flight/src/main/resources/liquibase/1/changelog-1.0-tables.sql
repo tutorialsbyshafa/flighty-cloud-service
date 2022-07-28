@@ -18,7 +18,7 @@ CREATE TABLE public.flight
     price               NUMERIC    NOT NULL,
     arrival_location    BIGINT REFERENCES public.location(id),
     departure_location  BIGINT REFERENCES public.location(id),
-    code                VARCHAR(10)  NOT NULL,
+    code                VARCHAR(50)  NOT NULL,
     status              VARCHAR(10)  NOT NULL,
     active              BOOLEAN NOT NULL
 );

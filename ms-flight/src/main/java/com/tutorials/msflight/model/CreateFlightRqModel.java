@@ -2,6 +2,7 @@ package com.tutorials.msflight.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotBlank;
@@ -43,7 +44,9 @@ public class CreateFlightRqModel {
 
     @AssertTrue(message = "Departure time must be before arrival time")
     private boolean isTimeValid() {
+        var formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
         return ObjectUtils.allNotNull(arrivalTime, departureTime) &&
-                LocalDateTime.parse(departureTime).isBefore(LocalDateTime.parse(arrivalTime));
+                LocalDateTime.parse(departureTime, formatter).isBefore(LocalDateTime.parse(arrivalTime, formatter));
     }
 }
