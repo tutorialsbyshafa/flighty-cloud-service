@@ -1,18 +1,16 @@
 package com.tutorials.msflight.service.impl;
 
-import static com.tutorials.msflight.mapper.FlightMapper.FLIGHT_MAPPER;
+import static com.tutorials.msflight.mapper.FlightMapper.FLIGHT_MAPPER_INSTANCE;
+import static com.tutorials.msflight.mapper.LocationMapper.LOCATION_MAPPER_INSTANCE;
 
 import com.tutorials.msflight.entity.Flight;
-import com.tutorials.msflight.entity.Location;
-import com.tutorials.msflight.exception.AppException;
-import com.tutorials.msflight.model.CreateFlightRqModel;
+import com.tutorials.msflight.exception.FlightyException;
+import com.tutorials.msflight.model.FlightRqModel;
 import com.tutorials.msflight.model.FlightRsModel;
-import com.tutorials.msflight.model.UpdateFlightRqModel;
-import com.tutorials.msflight.repo.FlightRepository;
-import com.tutorials.msflight.repo.LocationRepository;
+import com.tutorials.msflight.repository.FlightRepository;
 import com.tutorials.msflight.service.FlightService;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import com.tutorials.msflight.service.LocationService;
+import com.tutorials.msflight.util.GenerationUtil;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -25,79 +23,71 @@ import org.springframework.stereotype.Service;
 @Service
 public class FlightServiceImpl implements FlightService {
     private final FlightRepository flightRepository;
-    private final LocationRepository locationRepository;
+    private final LocationService locationService;
 
     @Override
-    public FlightRsModel createFlight(CreateFlightRqModel request) {
-        var departureLocation = findLocation(request.getDepartureLocation());
-        var arrivalLocation = findLocation(request.getArrivalLocation());
-        var code = generateFlightCode(departureLocation, arrivalLocation);
+    public FlightRsModel createFlight(FlightRqModel request) {
+        var departureLocation = locationService.locationById(request.getDepartureLocationId());
+        var arrivalLocation = locationService.locationById(request.getArrivalLocationId());
 
-        var flight = FLIGHT_MAPPER.mapRequestToEntity(request);
+        var flight = FLIGHT_MAPPER_INSTANCE.mapRequestToEntity(request);
         flight.setArrivalLocation(arrivalLocation);
         flight.setDepartureLocation(departureLocation);
-        flight.setCode(code);
-
+        flight.setCode(GenerationUtil.generateFlightCode(departureLocation, arrivalLocation));
         flightRepository.save(flight);
 
-        return getFlightResponse(departureLocation, arrivalLocation, flight);
+        log.info("Flight saved: {}", flight);
+        return getFlightResponse(flight);
     }
 
     @Override
-    public FlightRsModel updateFlight(UpdateFlightRqModel request) {
-        var departureLocation = findLocation(request.getDepartureLocation());
-        var arrivalLocation = findLocation(request.getArrivalLocation());
-        var code = generateFlightCode(departureLocation, arrivalLocation);
+    public FlightRsModel updateFlight(UUID flightId, FlightRqModel request) {
+        var flight = flightById(flightId);
 
-        var flight = findFlight(request.getId());
-        updateFlight(request, departureLocation, arrivalLocation, code, flight);
-
+        updateFlightValues(request, flight);
         flightRepository.save(flight);
+        log.info("Flight updated: {}", flight);
 
-        return getFlightResponse(departureLocation, arrivalLocation, flight);
+        return getFlightResponse(flight);
     }
 
     @Override
-    public List<FlightRsModel> getFlights() {
+    public List<FlightRsModel> getAllFlights() {
         var flights = flightRepository.findAllByActiveTrue();
 
         return flights.stream()
-                .map(FLIGHT_MAPPER::mapEntityToResponse)
+                .map(FLIGHT_MAPPER_INSTANCE::mapEntityToResponse)
                 .collect(Collectors.toList());
     }
 
-    private void updateFlight(UpdateFlightRqModel request, Location departureLocation, Location arrivalLocation,
-                           String code, Flight flight) {
-        var formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    private void updateFlightValues(FlightRqModel request, Flight flight) {
+        var departureLocation = locationService.locationById(request.getDepartureLocationId());
+        var arrivalLocation = locationService.locationById(request.getArrivalLocationId());
+        var code = GenerationUtil.generateFlightCode(departureLocation, arrivalLocation);
+
         flight.setArrivalLocation(arrivalLocation);
         flight.setDepartureLocation(departureLocation);
         flight.setCode(code);
         flight.setPrice(request.getPrice());
-        flight.setArrivalTime(LocalDateTime.parse(request.getArrivalTime(), formatter));
-        flight.setDepartureTime(LocalDateTime.parse(request.getDepartureTime(), formatter));
+        flight.setArrivalTime(request.getArrivalTime());
+        flight.setDepartureTime(request.getDepartureTime());
     }
 
-    private Location findLocation(UUID id) {
-        return locationRepository.findLocationByLocationId(id)
-                .orElseThrow(() -> new AppException("location not found by given id"));
+
+    private Flight flightById(UUID id) {
+        var flight = flightRepository.findByFlightIdAndActiveTrue(id)
+                .orElseThrow(() -> new FlightyException("flight not found by given id"));
+        log.info("Flight by ID '{}': {}", id, flight);
+
+
+        return flight;
     }
 
-    private Flight findFlight(UUID id) {
-        return flightRepository.findFlightByFlightIdAndActiveTrue(id)
-                .orElseThrow(() -> new AppException("flight not found by given id"));
-    }
 
-    private String generateFlightCode(Location departureLocation, Location arrivalLocation) {
-        return String.format("%s%s%s",
-                departureLocation.getCity().substring(0, 1).toUpperCase(),
-                arrivalLocation.getCity().substring(0, 1).toUpperCase(),
-                LocalDateTime.now());
-    }
-
-    private FlightRsModel getFlightResponse(Location departureLocation, Location arrivalLocation, Flight flight) {
-        var response = FLIGHT_MAPPER.mapEntityToResponse(flight);
-        response.setArrivalLocation(FLIGHT_MAPPER.mapLocationModel(arrivalLocation));
-        response.setDepartureLocation(FLIGHT_MAPPER.mapLocationModel(departureLocation));
+    private FlightRsModel getFlightResponse(Flight flight) {
+        var response = FLIGHT_MAPPER_INSTANCE.mapEntityToResponse(flight);
+        response.setDepartureLocation(LOCATION_MAPPER_INSTANCE.mapEntityToResponse(flight.getDepartureLocation()));
+        response.setArrivalLocation(LOCATION_MAPPER_INSTANCE.mapEntityToResponse(flight.getArrivalLocation()));
         return response;
     }
 

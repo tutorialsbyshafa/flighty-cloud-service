@@ -1,14 +1,14 @@
 package com.tutorials.msflight.service;
 
-import com.tutorials.msflight.model.CreateFlightRqModel;
+import com.tutorials.msflight.model.FlightRqModel;
 import com.tutorials.msflight.model.FlightRsModel;
-import com.tutorials.msflight.model.UpdateFlightRqModel;
 import java.util.List;
+import java.util.UUID;
 
 public interface FlightService {
-    FlightRsModel createFlight(CreateFlightRqModel request);
+    FlightRsModel createFlight(FlightRqModel request);
 
-    FlightRsModel updateFlight(UpdateFlightRqModel request);
+    FlightRsModel updateFlight(UUID flightId, FlightRqModel request);
 
-    List<FlightRsModel> getFlights();
+    List<FlightRsModel> getAllFlights();
 }

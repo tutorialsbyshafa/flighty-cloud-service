@@ -13,7 +13,10 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
@@ -21,23 +24,29 @@ import org.hibernate.annotations.GenerationTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Data
+@Getter
+@Setter
+@ToString(onlyExplicitlyIncluded = true)
 @Entity
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(schema = "public", name = "location")
 public class Location {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     Long id;
 
+    @ToString.Include
     @Generated(value = GenerationTime.ALWAYS)
     @Column(name = "location_id")
     UUID locationId;
 
+    @ToString.Include
     @Column(name = "city")
     String city;
 
+    @ToString.Include
     @Column(name = "airport")
     String airport;
 

@@ -4,12 +4,24 @@ import com.tutorials.msflight.enums.FlightStatus;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
@@ -17,40 +29,51 @@ import org.hibernate.annotations.GenerationTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Data
+@Getter
+@Setter
+@ToString(onlyExplicitlyIncluded = true)
 @Entity
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(schema = "public", name = "flight")
 public class Flight {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     Long id;
 
+    @ToString.Include
     @Generated(value = GenerationTime.ALWAYS)
     @Column(name = "flight_id")
     UUID flightId;
 
+    @ToString.Include
     @Column(name = "code")
     String code;
 
+    @ToString.Include
     @Column(name = "arrival_time")
     LocalDateTime arrivalTime;
 
+    @ToString.Include
     @Column(name = "departure_time")
     LocalDateTime departureTime;
 
+    @ToString.Include
     @Column(name = "price")
     BigDecimal price;
 
+    @ToString.Include
     @ManyToOne
-    @JoinColumn(name = "arrival_location", referencedColumnName = "id")
+    @JoinColumn(name = "arrival_location_id", referencedColumnName = "id")
     Location arrivalLocation;
 
+    @ToString.Include
     @ManyToOne
-    @JoinColumn(name = "departure_location", referencedColumnName = "id")
+    @JoinColumn(name = "departure_location_id", referencedColumnName = "id")
     Location departureLocation;
 
+    @ToString.Include
     @Enumerated(value = EnumType.STRING)
     @Column(name = "status")
     FlightStatus status;
@@ -66,6 +89,5 @@ public class Flight {
         if (active == null)
             active = true;
     }
-
 
 }

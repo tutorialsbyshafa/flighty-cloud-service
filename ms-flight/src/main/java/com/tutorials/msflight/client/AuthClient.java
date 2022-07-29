@@ -1,6 +1,8 @@
 package com.tutorials.msflight.client;
 
 
+import static com.tutorials.msflight.util.Constants.EXTRACT_JWT_URL;
+
 import com.tutorials.msflight.model.ExtractJwtRqModel;
 import com.tutorials.msflight.model.ExtractJwtRsModel;
 import com.tutorials.msflight.model.ResponseModel;
@@ -12,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @FeignClient(value = "auth-ms", url = "${client.url.auth}")
 public interface AuthClient {
 
-    @PostMapping("/jwt/extract")
+    @PostMapping(EXTRACT_JWT_URL)
     ResponseEntity<ResponseModel<ExtractJwtRsModel>> extractToken(@RequestBody ExtractJwtRqModel requestBody);
 
 }

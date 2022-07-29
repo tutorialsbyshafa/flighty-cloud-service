@@ -3,20 +3,15 @@ package com.tutorials.msflight.model;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
 @AllArgsConstructor
-@Getter
-@Setter
-@ToString
+@Data
 @Builder
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ExtractJwtRqModel {
-
     String token;
 }

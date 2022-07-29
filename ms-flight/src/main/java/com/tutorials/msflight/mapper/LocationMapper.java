@@ -10,12 +10,10 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
-public abstract class FlightMapper {
+public abstract class LocationMapper {
 
-    public static final FlightMapper FLIGHT_MAPPER_INSTANCE = Mappers.getMapper(FlightMapper.class);
+    public static final LocationMapper LOCATION_MAPPER_INSTANCE = Mappers.getMapper(LocationMapper.class);
 
-    public abstract Flight mapRequestToEntity(FlightRqModel request);
-
-    @Mapping(target = "id", source = "flightId")
-    public abstract FlightRsModel mapEntityToResponse(Flight flight);
+    @Mapping(target = "id", source = "locationId")
+    public abstract LocationModel mapEntityToResponse(Location location);
 }

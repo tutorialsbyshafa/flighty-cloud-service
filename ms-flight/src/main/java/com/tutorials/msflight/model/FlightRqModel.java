@@ -1,8 +1,11 @@
 package com.tutorials.msflight.model;
 
+
+import static com.tutorials.msflight.util.Constants.DATE_TIME_FORMAT;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotBlank;
@@ -20,36 +23,32 @@ import org.apache.commons.lang3.ObjectUtils;
 @Builder
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UpdateFlightRqModel {
-    @NotNull
-    UUID id;
+public class FlightRqModel {
 
     @NotBlank
-    String arrivalTime;
+    @JsonFormat(pattern = DATE_TIME_FORMAT)
+    LocalDateTime arrivalTime;
 
     @NotBlank
-    String departureTime;
+    @JsonFormat(pattern = DATE_TIME_FORMAT)
+    LocalDateTime departureTime;
 
     @NotNull
     BigDecimal price;
 
     @NotNull
-    UUID arrivalLocation;
+    UUID arrivalLocationId;
 
     @NotNull
-    UUID departureLocation;
+    UUID departureLocationId;
 
     @AssertTrue(message = "Arrival and departure locations must be different")
     private boolean areLocationsValid() {
-        return ObjectUtils.allNotNull(arrivalLocation, departureLocation) &&
-                !arrivalLocation.equals(departureLocation);
+        return ObjectUtils.allNotNull(arrivalLocationId, departureLocationId) && !arrivalLocationId.equals(departureLocationId);
     }
 
     @AssertTrue(message = "Departure time must be before arrival time")
     private boolean isTimeValid() {
-        var formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-
-        return ObjectUtils.allNotNull(arrivalTime, departureTime) &&
-                LocalDateTime.parse(departureTime, formatter).isBefore(LocalDateTime.parse(arrivalTime, formatter));
+        return ObjectUtils.allNotNull(arrivalTime, departureTime) && departureTime.isBefore(arrivalTime);
     }
 }
