@@ -5,11 +5,12 @@ import static com.tutorials.msuser.mapper.UserMapper.USER_MAPPER_INSTANCE;
 import com.tutorials.msuser.entity.User;
 import com.tutorials.msuser.exception.AppException;
 import com.tutorials.msuser.model.SignupRequestModel;
-import com.tutorials.msuser.model.SignupResponseModel;
+import com.tutorials.msuser.model.UserRsModel;
 import com.tutorials.msuser.repository.RoleRepository;
 import com.tutorials.msuser.repository.UserRepository;
 import com.tutorials.msuser.service.UserService;
 import java.util.Collections;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,13 +24,21 @@ public class UserServiceImpl implements UserService {
     private final BCryptPasswordEncoder encoder;
 
     @Override
-    public SignupResponseModel createUser(SignupRequestModel request) {
+    public UserRsModel createUser(SignupRequestModel request) {
         checkDuplicateEmail(request.getUsername());
 
         var user = USER_MAPPER_INSTANCE.mapRequestToEntity(request);
         user.setPassword(encoder.encode(request.getPassword()));
         setRoles(user);
         userRepository.save(user);
+
+        return USER_MAPPER_INSTANCE.mapEntityToResponse(user);
+    }
+
+    @Override
+    public UserRsModel getUserById(UUID id) {
+        var user = userRepository.findByUserId(id).orElseThrow(
+                () -> new AppException("user not found by id"));
 
         return USER_MAPPER_INSTANCE.mapEntityToResponse(user);
     }

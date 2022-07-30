@@ -1,21 +1,23 @@
-package com.tutorials.msuser.model;
+package com.tutorials.msbooking.model;
 
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
-import java.util.UUID;
-
 @AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@Setter
+@ToString
 @Builder
-@Data
+@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class SignupResponseModel {
+public class ExtractJwtRsModel {
     String username;
-    String fullName;
-    UUID id;
+    List<String> roles;
 }

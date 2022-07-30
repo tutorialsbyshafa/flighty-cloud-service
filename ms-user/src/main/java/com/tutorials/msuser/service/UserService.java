@@ -1,8 +1,11 @@
 package com.tutorials.msuser.service;
 
 import com.tutorials.msuser.model.SignupRequestModel;
-import com.tutorials.msuser.model.SignupResponseModel;
+import com.tutorials.msuser.model.UserRsModel;
+import java.util.UUID;
 
 public interface UserService {
-    SignupResponseModel createUser(SignupRequestModel request);
+    UserRsModel createUser(SignupRequestModel request);
+
+    UserRsModel getUserById(UUID id);
 }
