@@ -2,7 +2,7 @@ package com.tutorials.msuser.mapper;
 
 import com.tutorials.msuser.entity.User;
 import com.tutorials.msuser.model.SignupRequestModel;
-import com.tutorials.msuser.model.SignupResponseModel;
+import com.tutorials.msuser.model.UserRsModel;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -18,5 +18,5 @@ public abstract class UserMapper {
 
     @Mapping(target = "username", source = "email")
     @Mapping(target = "id", source = "userId")
-    public abstract SignupResponseModel mapEntityToResponse(User user);
+    public abstract UserRsModel mapEntityToResponse(User user);
 }
