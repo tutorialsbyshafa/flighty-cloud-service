@@ -28,8 +28,6 @@ public class FlightModel {
     LocalDateTime departureTime;
 
     BigDecimal price;
-
     LocationModel arrivalLocation;
-
     LocationModel departureLocation;
 }

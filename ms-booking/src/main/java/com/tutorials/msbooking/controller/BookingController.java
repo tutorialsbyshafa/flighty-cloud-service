@@ -1,6 +1,6 @@
 package com.tutorials.msbooking.controller;
 
-import static com.tutorials.msbooking.util.Constants.BOOKINGS_BY_ID_URL;
+import static com.tutorials.msbooking.util.Constants.PATH_ID;
 import static com.tutorials.msbooking.util.Constants.BOOKINGS_URL;
 import static com.tutorials.msbooking.util.Constants.REQUEST_LOG_FORMAT;
 import static com.tutorials.msbooking.util.Constants.RESPONSE_LOG_FORMAT;
@@ -35,25 +35,22 @@ public class BookingController {
 
     @PostMapping
     public ResponseEntity<BookingRsModel> createBooking(Authentication auth,
-                                @Valid @RequestBody BookingRqModel request) {
+                                                        @Valid @RequestBody BookingRqModel request) {
         log.info(REQUEST_LOG_FORMAT, BOOKINGS_URL, request);
-
         var username = ((ExtractJwtRsModel) auth.getPrincipal()).getUsername();
         var response = bookingService.createBooking(request, username);
-
         log.info(RESPONSE_LOG_FORMAT, BOOKINGS_URL, response);
         return ResponseEntity.ok().body(response);
     }
 
-    @PutMapping(BOOKINGS_BY_ID_URL)
+    @PutMapping(PATH_ID)
     public ResponseEntity<BookingRsModel> updateBooking(Authentication auth,
-                                                       @Valid @RequestBody BookingRqModel request,
-                                                       @PathVariable UUID id) {
-        log.info(REQUEST_LOG_FORMAT, BOOKINGS_URL + BOOKINGS_BY_ID_URL, request);
+                                                        @Valid @RequestBody BookingRqModel request,
+                                                        @PathVariable UUID id) {
+        log.info(REQUEST_LOG_FORMAT, BOOKINGS_URL + PATH_ID, request);
 
         var username = ((ExtractJwtRsModel) auth.getPrincipal()).getUsername();
         var response = bookingService.updateBooking(request, id, username);
-
         log.info(RESPONSE_LOG_FORMAT, BOOKINGS_URL, response);
         return ResponseEntity.ok().body(response);
     }
@@ -61,28 +58,26 @@ public class BookingController {
     @GetMapping
     public ResponseEntity<List<BookingRsModel>> getAllBookings(Authentication auth) {
         log.info(REQUEST_LOG_FORMAT, BOOKINGS_URL, null);
-
         var username = ((ExtractJwtRsModel) auth.getPrincipal()).getUsername();
         var response = bookingService.getAllBookings(username);
-
         log.info(RESPONSE_LOG_FORMAT, BOOKINGS_URL, response);
         return ResponseEntity.ok().body(response);
     }
 
-    @GetMapping(BOOKINGS_BY_ID_URL)
+    @GetMapping(PATH_ID)
     public ResponseEntity<BookingRsModel> getBookingById(Authentication auth, @PathVariable UUID id) {
-        log.info(REQUEST_LOG_FORMAT, BOOKINGS_URL + BOOKINGS_BY_ID_URL, null);
+        log.info(REQUEST_LOG_FORMAT, BOOKINGS_URL + PATH_ID, null);
 
         var username = ((ExtractJwtRsModel) auth.getPrincipal()).getUsername();
-        var response = bookingService.getBookingById(id, username);
+        var response = bookingService.getBookingByIdAndUser(id, username);
 
         log.info(RESPONSE_LOG_FORMAT, BOOKINGS_URL, response);
         return ResponseEntity.ok().body(response);
     }
 
-    @DeleteMapping(BOOKINGS_BY_ID_URL)
+    @DeleteMapping(PATH_ID)
     public ResponseEntity<BookingRsModel> deleteBooking(Authentication auth, @PathVariable UUID id) {
-        log.info(REQUEST_LOG_FORMAT, BOOKINGS_URL + BOOKINGS_BY_ID_URL, null);
+        log.info(REQUEST_LOG_FORMAT, BOOKINGS_URL + PATH_ID, null);
 
         var username = ((ExtractJwtRsModel) auth.getPrincipal()).getUsername();
         var response = bookingService.deleteBooking(id, username);

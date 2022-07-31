@@ -4,7 +4,7 @@ import static com.tutorials.msbooking.mapper.BookingMapper.BOOKING_MAPPER_INSTAN
 
 import com.tutorials.msbooking.entity.Booking;
 import com.tutorials.msbooking.entity.User;
-import com.tutorials.msbooking.exception.AppException;
+import com.tutorials.msbooking.exception.FlightException;
 import com.tutorials.msbooking.model.BookingRqModel;
 import com.tutorials.msbooking.model.BookingRsModel;
 import com.tutorials.msbooking.repository.BookingRepository;
@@ -30,49 +30,47 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public BookingRsModel createBooking(BookingRqModel request, String username) {
         var flight = flightService.flightById(request.getFlightId());
-        var user = userService.userById(username);
+        var user = userService.userByUsername(username);
 
         var booking = BOOKING_MAPPER_INSTANCE.mapRequestToEntity(request);
         booking.setUser(user);
         booking.setFlight(flight);
-
         bookingRepo.save(booking);
-        log.info("Booking saved: {}", booking);
 
+        log.info("Booking saved: {}", booking);
         return BOOKING_MAPPER_INSTANCE.mapEntityToResponse(booking);
     }
 
     @Override
     public BookingRsModel updateBooking(BookingRqModel request, UUID id, String username) {
-        var booking = bookingById(id, userService.userById(username));
+        var booking = bookingByIdAndUser(id, userService.userByUsername(username));
         var flight = flightService.flightById(request.getFlightId());
         booking.setFlight(flight);
-
         bookingRepo.save(booking);
 
-        log.info("Booking saved: {}", booking);
-
+        log.info("Booking updated: {}", booking);
         return BOOKING_MAPPER_INSTANCE.mapEntityToResponse(booking);
     }
 
     @Override
     public List<BookingRsModel> getAllBookings(String username) {
-        var bookings = bookingRepo.findAllByUserAndActiveTrue(userService.userById(username));
+        var bookings = bookingRepo.findAllByUserAndActiveTrue(userService.userByUsername(username));
 
-        return bookings.stream()
+        return bookings
+                .stream()
                 .map(BOOKING_MAPPER_INSTANCE::mapEntityToResponse)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public BookingRsModel getBookingById(UUID id, String username) {
-        var booking = bookingById(id, userService.userById(username));
+    public BookingRsModel getBookingByIdAndUser(UUID id, String username) {
+        var booking = bookingByIdAndUser(id, userService.userByUsername(username));
         return BOOKING_MAPPER_INSTANCE.mapEntityToResponse(booking);
     }
 
     @Override
     public BookingRsModel deleteBooking(UUID id, String username) {
-        var booking = bookingById(id, userService.userById(username));
+        var booking = bookingByIdAndUser(id, userService.userByUsername(username));
         booking.setActive(false);
         bookingRepo.save(booking);
 
@@ -80,9 +78,9 @@ public class BookingServiceImpl implements BookingService {
         return BOOKING_MAPPER_INSTANCE.mapEntityToResponse(booking);
     }
 
-    private Booking bookingById(UUID id, User user) {
+    private Booking bookingByIdAndUser(UUID id, User user) {
         var booking = bookingRepo.findByBookingIdAndUserAndActiveTrue(id, user).orElseThrow(
-                () -> new AppException("Booking not found by given id"));
+                () -> new FlightException("Booking not found by given ID and User"));
 
         log.info("Booking by ID '{}' and user '{}': {}", id, user, booking);
         return booking;

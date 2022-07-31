@@ -1,7 +1,7 @@
 package com.tutorials.msbooking.service.impl;
 
 import com.tutorials.msbooking.entity.Flight;
-import com.tutorials.msbooking.exception.AppException;
+import com.tutorials.msbooking.exception.FlightException;
 import com.tutorials.msbooking.repository.FlightRepository;
 import com.tutorials.msbooking.service.FlightService;
 import java.util.UUID;
@@ -19,7 +19,7 @@ public class FlightServiceImpl implements FlightService {
     @Override
     public Flight flightById(UUID id) {
         var flight = flightRepository.findByFlightIdAndActiveTrue(id)
-                .orElseThrow(() -> new AppException("Flight not found by given id"));
+                .orElseThrow(() -> new FlightException("Flight not found by given ID"));
 
         log.info("Flight by ID '{}': {}", id, flight);
         return flight;

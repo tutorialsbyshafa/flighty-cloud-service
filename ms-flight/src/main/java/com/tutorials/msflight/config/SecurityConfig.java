@@ -1,6 +1,8 @@
 package com.tutorials.msflight.config;
 
 
+import static com.tutorials.msflight.util.Constants.FLIGHTS_URL;
+
 import com.tutorials.msflight.security.AuthorizationFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpMethod;
@@ -31,9 +33,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/flights").hasRole("ADMIN")
-                .antMatchers(HttpMethod.PUT, "/flights/id").hasRole("ADMIN")
-                .antMatchers(HttpMethod.GET, "/flights").permitAll()
+                .antMatchers(HttpMethod.POST, FLIGHTS_URL).hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, FLIGHTS_URL).hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, FLIGHTS_URL).authenticated()
                 .antMatchers(AUTH_WHITELIST).permitAll()
                 .anyRequest().authenticated()
                 .and()

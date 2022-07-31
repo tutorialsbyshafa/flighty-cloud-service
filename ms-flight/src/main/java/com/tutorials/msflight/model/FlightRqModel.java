@@ -7,8 +7,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
+import javax.validation.Valid;
 import javax.validation.constraints.AssertTrue;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -22,14 +22,15 @@ import org.apache.commons.lang3.ObjectUtils;
 @NoArgsConstructor
 @Builder
 @Data
+@Valid
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class FlightRqModel {
 
-    @NotBlank
+    @NotNull
     @JsonFormat(pattern = DATE_TIME_FORMAT)
     LocalDateTime arrivalTime;
 
-    @NotBlank
+    @NotNull
     @JsonFormat(pattern = DATE_TIME_FORMAT)
     LocalDateTime departureTime;
 
@@ -42,13 +43,13 @@ public class FlightRqModel {
     @NotNull
     UUID departureLocationId;
 
-    @AssertTrue(message = "Arrival and departure locations must be different")
-    private boolean areLocationsValid() {
-        return ObjectUtils.allNotNull(arrivalLocationId, departureLocationId) && !arrivalLocationId.equals(departureLocationId);
+    @AssertTrue(message = "Departure time must be before arrival time")
+    boolean isTimeValid() {
+        return ObjectUtils.allNotNull(arrivalTime, departureTime) && departureTime.isBefore(arrivalTime);
     }
 
-    @AssertTrue(message = "Departure time must be before arrival time")
-    private boolean isTimeValid() {
-        return ObjectUtils.allNotNull(arrivalTime, departureTime) && departureTime.isBefore(arrivalTime);
+    @AssertTrue(message = "Arrival and departure locations must be different")
+    boolean isLocationsValid() {
+        return ObjectUtils.allNotNull(arrivalLocationId, departureLocationId) && !arrivalLocationId.equals(departureLocationId);
     }
 }

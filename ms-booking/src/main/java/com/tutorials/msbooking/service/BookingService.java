@@ -12,7 +12,7 @@ public interface BookingService {
 
     List<BookingRsModel> getAllBookings(String username);
 
-    BookingRsModel getBookingById(UUID id, String username);
+    BookingRsModel getBookingByIdAndUser(UUID id, String username);
 
     BookingRsModel deleteBooking(UUID id, String username);
 }

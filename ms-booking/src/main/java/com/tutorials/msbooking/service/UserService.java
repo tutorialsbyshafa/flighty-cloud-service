@@ -6,5 +6,5 @@ import com.tutorials.msbooking.model.BookingRsModel;
 import java.util.UUID;
 
 public interface UserService {
-    User userById(String username);
+    User userByUsername(String username);
 }

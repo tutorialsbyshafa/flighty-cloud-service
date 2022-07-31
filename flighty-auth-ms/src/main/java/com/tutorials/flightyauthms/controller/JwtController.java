@@ -1,7 +1,7 @@
 package com.tutorials.flightyauthms.controller;
 
-import static com.tutorials.flightyauthms.util.UrlConstant.EXTRACT_JWT_URL;
-import static com.tutorials.flightyauthms.util.UrlConstant.GENERATE_JWT_URL;
+import static com.tutorials.flightyauthms.util.Constants.EXTRACT_JWT_URL;
+import static com.tutorials.flightyauthms.util.Constants.GENERATE_JWT_URL;
 
 import com.tutorials.flightyauthms.model.ExtractJwtRqModel;
 import com.tutorials.flightyauthms.model.ExtractJwtRsModel;

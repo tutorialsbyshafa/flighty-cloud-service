@@ -1,8 +1,12 @@
 package com.tutorials.msbooking.config;
 
 
+import static com.tutorials.msbooking.util.Constants.ADMIN;
+import static com.tutorials.msbooking.util.Constants.BOOKINGS_URL;
+
 import com.tutorials.msbooking.security.AuthorizationFilter;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -31,6 +35,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(AUTH_WHITELIST).permitAll()
+                .antMatchers(HttpMethod.POST, BOOKINGS_URL).hasRole(ADMIN)
+                .antMatchers(HttpMethod.PUT, BOOKINGS_URL).hasRole(ADMIN)
+                .antMatchers(HttpMethod.GET, BOOKINGS_URL).authenticated()
+                .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class);
     }

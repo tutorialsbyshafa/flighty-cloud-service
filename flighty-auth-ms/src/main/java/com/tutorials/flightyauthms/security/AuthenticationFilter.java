@@ -1,6 +1,6 @@
 package com.tutorials.flightyauthms.security;
 
-import static com.tutorials.flightyauthms.util.UrlConstant.LOGIN_URL;
+import static com.tutorials.flightyauthms.util.Constants.LOGIN_URL;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tutorials.flightyauthms.exception.AppException;

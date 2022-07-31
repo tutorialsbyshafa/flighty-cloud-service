@@ -1,10 +1,8 @@
 package com.tutorials.msflight.mapper;
 
 import com.tutorials.msflight.entity.Flight;
-import com.tutorials.msflight.entity.Location;
 import com.tutorials.msflight.model.FlightRqModel;
 import com.tutorials.msflight.model.FlightRsModel;
-import com.tutorials.msflight.model.LocationModel;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -17,5 +15,7 @@ public abstract class FlightMapper {
     public abstract Flight mapRequestToEntity(FlightRqModel request);
 
     @Mapping(target = "id", source = "flightId")
+    @Mapping(target = "arrivalLocation", ignore = true)
+    @Mapping(target = "departureLocation", ignore = true)
     public abstract FlightRsModel mapEntityToResponse(Flight flight);
 }

@@ -1,6 +1,6 @@
 package com.tutorials.flightyauthms.controller;
 
-import static com.tutorials.flightyauthms.util.UrlConstant.LOGIN_URL;
+import static com.tutorials.flightyauthms.util.Constants.LOGIN_URL;
 
 import com.tutorials.flightyauthms.model.LoginRequestModel;
 import io.swagger.v3.oas.annotations.Operation;

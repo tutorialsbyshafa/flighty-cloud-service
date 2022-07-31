@@ -13,7 +13,9 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.Generated;
@@ -22,7 +24,9 @@ import org.hibernate.annotations.GenerationTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Data
+@Getter
+@Setter
+@ToString
 @Entity
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(schema = "public", name = "location")
