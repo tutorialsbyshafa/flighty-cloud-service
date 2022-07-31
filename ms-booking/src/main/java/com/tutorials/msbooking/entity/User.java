@@ -24,6 +24,7 @@ import org.hibernate.annotations.GenerationTime;
 
 @Getter
 @Setter
+@ToString
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -31,6 +32,8 @@ import org.hibernate.annotations.GenerationTime;
 @Table(name = "app_user")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class User {
+
+    @ToString.Exclude
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
@@ -49,6 +52,7 @@ public class User {
     @Column(name = "full_name")
     String fullName;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "user")
     List<Booking> bookings;
 }

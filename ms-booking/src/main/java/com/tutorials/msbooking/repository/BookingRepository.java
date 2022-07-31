@@ -8,7 +8,7 @@ import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface BookingRepository extends JpaRepository<Booking, Long> {
-    Optional<Booking> findByBookingIdAndActiveTrue(UUID id);
+    Optional<Booking> findByBookingIdAndUserAndActiveTrue(UUID id, User user);
 
     List<Booking> findAllByUserAndActiveTrue(User user);
 }

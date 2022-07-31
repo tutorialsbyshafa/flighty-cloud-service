@@ -15,7 +15,10 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
@@ -23,11 +26,15 @@ import org.hibernate.annotations.GenerationTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Data
+@Getter
+@Setter
+@ToString
 @Entity
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(schema = "public", name = "booking")
 public class Booking {
+
+    @ToString.Exclude
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -41,14 +48,16 @@ public class Booking {
     @Column(name = "creation_date_time")
     LocalDateTime creationDateTime;
 
-    @Generated(value = GenerationTime.ALWAYS)
+    @Generated(value = GenerationTime.INSERT)
     @Column(name = "active")
     Boolean active;
 
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     User user;
 
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "flight_id", referencedColumnName = "id")
     Flight flight;

@@ -9,4 +9,5 @@ public final class Constants {
     public static final String RESPONSE_LOG_FORMAT = "Response data: [URL:{}, payload: {}]";
     public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm";
     public static final String BOOKINGS_URL = "/bookings";
+    public static final String BOOKINGS_BY_ID_URL = "/{id}";
 }

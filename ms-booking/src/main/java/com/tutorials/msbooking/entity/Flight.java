@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
@@ -22,6 +23,8 @@ import org.hibernate.annotations.GenerationTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(schema = "public", name = "flight")
 public class Flight {
+
+    @ToString.Exclude
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -30,6 +33,7 @@ public class Flight {
     @Generated(value = GenerationTime.ALWAYS)
     @Column(name = "flight_id")
     UUID flightId;
+
     @Column(name = "code")
     String code;
 
@@ -50,9 +54,11 @@ public class Flight {
     @JoinColumn(name = "departure_location", referencedColumnName = "id")
     Location departureLocation;
 
+    @ToString.Exclude
     @Column(name = "active")
     Boolean active;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "flight")
     List<Booking> bookings;
 }

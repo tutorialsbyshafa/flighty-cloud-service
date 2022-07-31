@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
@@ -26,6 +27,8 @@ import org.hibernate.annotations.GenerationTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(schema = "public", name = "location")
 public class Location {
+
+    @ToString.Exclude
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -41,9 +44,11 @@ public class Location {
     @Column(name = "airport")
     String airport;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "arrivalLocation")
     List<Flight> arrivalFlights;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "departureLocation")
     List<Flight> departureFlights;
 }
