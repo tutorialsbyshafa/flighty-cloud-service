@@ -14,6 +14,7 @@ import javax.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,19 +41,35 @@ public class FlightController {
 
     @PutMapping(PATH_ID)
     public ResponseEntity<FlightRsModel> updateFlight(
-            @PathVariable(name = "id") UUID flightId,
+            @PathVariable(name = "id") UUID id,
             @Valid @RequestBody FlightRqModel request) {
         log.info(REQUEST_LOG_FORMAT, FLIGHTS_URL + PATH_ID, request);
-        var response = flightService.updateFlight(flightId, request);
+        var response = flightService.updateFlight(id, request);
         log.info(RESPONSE_LOG_FORMAT, FLIGHTS_URL + PATH_ID, response);
         return ResponseEntity.ok().body(response);
     }
 
     @GetMapping
-    public ResponseEntity<List<FlightRsModel>> getFlights() {
+    public ResponseEntity<List<FlightRsModel>> getAllFlights() {
         log.info(REQUEST_LOG_FORMAT, FLIGHTS_URL, null);
         var response = flightService.getAllFlights();
         log.info(RESPONSE_LOG_FORMAT, FLIGHTS_URL, response);
+        return ResponseEntity.ok().body(response);
+    }
+
+    @GetMapping(PATH_ID)
+    public ResponseEntity<FlightRsModel> getFlight(@PathVariable(name = "id") UUID id) {
+        log.info(REQUEST_LOG_FORMAT, FLIGHTS_URL + PATH_ID, null);
+        var response = flightService.getFlight(id);
+        log.info(RESPONSE_LOG_FORMAT, FLIGHTS_URL + PATH_ID, response);
+        return ResponseEntity.ok().body(response);
+    }
+
+    @DeleteMapping(PATH_ID)
+    public ResponseEntity<FlightRsModel> deleteFlight(@PathVariable(name = "id") UUID id) {
+        log.info(REQUEST_LOG_FORMAT, FLIGHTS_URL + PATH_ID, null);
+        var response = flightService.deleteFlight(id);
+        log.info(RESPONSE_LOG_FORMAT, FLIGHTS_URL + PATH_ID, response);
         return ResponseEntity.ok().body(response);
     }
 

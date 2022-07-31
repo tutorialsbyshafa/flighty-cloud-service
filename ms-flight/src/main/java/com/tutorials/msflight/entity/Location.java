@@ -38,7 +38,7 @@ public class Location {
     Long id;
 
     @ToString.Include
-    @Generated(value = GenerationTime.ALWAYS)
+    @Generated(value = GenerationTime.INSERT)
     @Column(name = "location_id")
     UUID locationId;
 

@@ -46,6 +46,7 @@ security:
 client:
   url:
     auth: ${AUTH_MS_URL:http://localhost:8081/auth-ms/}
+    booking: ${BOOKING_MS_URL:http://localhost:8081/ms-booking/}
 
 feign:
   client:

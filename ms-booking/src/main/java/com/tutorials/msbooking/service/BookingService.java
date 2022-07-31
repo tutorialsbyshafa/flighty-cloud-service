@@ -15,4 +15,6 @@ public interface BookingService {
     BookingRsModel getBookingByIdAndUser(UUID id, String username);
 
     BookingRsModel deleteBooking(UUID id, String username);
+
+    List<BookingRsModel> deleteBooking(UUID flightId);
 }

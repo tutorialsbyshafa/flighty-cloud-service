@@ -43,7 +43,7 @@ public class Flight {
     Long id;
 
     @ToString.Include
-    @Generated(value = GenerationTime.ALWAYS)
+    @Generated(value = GenerationTime.INSERT)
     @Column(name = "flight_id")
     UUID flightId;
 

@@ -5,9 +5,11 @@ import static com.tutorials.msflight.mapper.LocationMapper.LOCATION_MAPPER_INSTA
 
 import com.tutorials.msflight.entity.Flight;
 import com.tutorials.msflight.exception.FlightyException;
+import com.tutorials.msflight.model.BookingRsModel;
 import com.tutorials.msflight.model.FlightRqModel;
 import com.tutorials.msflight.model.FlightRsModel;
 import com.tutorials.msflight.repository.FlightRepository;
+import com.tutorials.msflight.service.BookingService;
 import com.tutorials.msflight.service.FlightService;
 import com.tutorials.msflight.service.LocationService;
 import com.tutorials.msflight.util.GenerationUtil;
@@ -24,6 +26,7 @@ import org.springframework.stereotype.Service;
 public class FlightServiceImpl implements FlightService {
     private final FlightRepository flightRepository;
     private final LocationService locationService;
+    private final BookingService bookingService;
 
     @Override
     public FlightRsModel createFlight(FlightRqModel request) {
@@ -41,8 +44,8 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public FlightRsModel updateFlight(UUID flightId, FlightRqModel request) {
-        var flight = flightById(flightId);
+    public FlightRsModel updateFlight(UUID id, FlightRqModel request) {
+        var flight = flightById(id);
 
         updateFlightValues(request, flight);
         flightRepository.save(flight);
@@ -58,6 +61,24 @@ public class FlightServiceImpl implements FlightService {
         return flights.stream()
                 .map(FLIGHT_MAPPER_INSTANCE::mapEntityToResponse)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public FlightRsModel getFlight(UUID id) {
+        return FLIGHT_MAPPER_INSTANCE.mapEntityToResponse(flightById(id));
+    }
+
+    @Override
+    public FlightRsModel deleteFlight(UUID id) {
+        var flight = flightById(id);
+        var deleteBookingsResponse = bookingService.deleteBooking(flight.getFlightId());
+        log.info("Bookings deleted: {}", deleteBookingsResponse);
+
+        flight.setActive(false);
+        flightRepository.save(flight);
+        log.info("Flight active is set to false: {}", flight);
+
+        return FLIGHT_MAPPER_INSTANCE.mapEntityToResponse(flightById(id));
     }
 
     private void updateFlightValues(FlightRqModel request, Flight flight) {

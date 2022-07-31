@@ -11,4 +11,8 @@ public interface FlightService {
     FlightRsModel updateFlight(UUID flightId, FlightRqModel request);
 
     List<FlightRsModel> getAllFlights();
+
+    FlightRsModel getFlight(UUID id);
+
+    FlightRsModel deleteFlight(UUID id);
 }

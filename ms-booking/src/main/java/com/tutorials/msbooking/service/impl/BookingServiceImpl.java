@@ -11,6 +11,7 @@ import com.tutorials.msbooking.repository.BookingRepository;
 import com.tutorials.msbooking.service.BookingService;
 import com.tutorials.msbooking.service.FlightService;
 import com.tutorials.msbooking.service.UserService;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -76,6 +77,21 @@ public class BookingServiceImpl implements BookingService {
 
         log.info("Booking active is set to false: {}", booking);
         return BOOKING_MAPPER_INSTANCE.mapEntityToResponse(booking);
+    }
+
+    @Override
+    public List<BookingRsModel> deleteBooking(UUID flightId) {
+        var bookings = bookingRepo.findAllByFlightId(flightId);
+
+        var response = new ArrayList<BookingRsModel>();
+
+        bookings.forEach(booking -> {
+            booking.setActive(false);
+            log.info("Booking active is set to false: {}", booking);
+            response.add(BOOKING_MAPPER_INSTANCE.mapEntityToResponse(booking));
+        });
+
+        return response;
     }
 
     private Booking bookingByIdAndUser(UUID id, User user) {

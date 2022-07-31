@@ -11,4 +11,10 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     Optional<Booking> findByBookingIdAndUserAndActiveTrue(UUID id, User user);
 
     List<Booking> findAllByUserAndActiveTrue(User user);
+
+    default List<Booking> findAllByFlightId(UUID flightId) {
+        return findAllByFlight_FlightId(flightId);
+    }
+
+    List<Booking> findAllByFlight_FlightId(UUID flightId);
 }
